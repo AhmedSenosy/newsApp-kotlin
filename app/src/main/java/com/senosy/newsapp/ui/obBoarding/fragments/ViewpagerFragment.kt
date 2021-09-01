@@ -1,4 +1,4 @@
-package com.senosy.newsapp.ui.obBoarding
+package com.senosy.newsapp.ui.obBoarding.fragments
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -26,6 +26,7 @@ class ViewpagerFragment : Fragment() {
         val binding = FragmentViewpagerBinding.inflate(inflater, container, false)
         val adapter = ViewPagerAdapter(fragments, requireActivity().supportFragmentManager, lifecycle)
         binding.vpOnboarding.adapter = adapter
+        binding.vpOnboarding.isUserInputEnabled = false
         return binding.root
     }
 

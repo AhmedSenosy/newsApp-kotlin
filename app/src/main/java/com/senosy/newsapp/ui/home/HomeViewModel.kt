@@ -29,13 +29,6 @@ class HomeViewModel(
         _loading.value = false
         failure.value = false
         isShowRefresh.value = false
-//        periodValue.set(PERIOD_VALUE)
-//        adapter.addListener(object : OnRecyclerItemClickListener {
-//            override fun onRecyclerItemClickListener(articleData: ArticleData) {
-//                articleDetails.value = articleData
-//            }
-//
-//        })
         getArticles()
     }
 
@@ -76,36 +69,6 @@ class HomeViewModel(
                 _loading.postValue(false)
                 failure.postValue(true)
             }
-
-//            useCase.getMostPopular(period).collect { it ->
-//                when (it) {
-//                    is DataState.Loading -> {
-//                        _loading.postValue(true)
-//                    }
-//
-//                    is DataState.Success -> {
-//                        withContext(Dispatchers.Main)
-//                        {
-//                            _popularArticles.value = it.data
-//                            _loading.postValue(false)
-//                            failure.postValue(false)
-//                            it.data.articleData?.let { it1 -> adapter.addData(it1) }
-//                        }
-//                    }
-//
-//                    is DataState.Error -> {
-//                        errorMessage.set(it.error?.let { it1 ->
-//                            ErrorHandling(
-//                                it1,
-//                                resourceProvider
-//                            ).errorMsg
-//                        })
-//                        _loading.postValue(false)
-//                        failure.postValue(true)
-//                    }
-//                }
-//
-//            }
         }
     }
 
