@@ -2,4 +2,8 @@
     <string name="app_name">NewsApp</string>
     <string name="check_connection">Please Check Internet Connection and try again</string>
     <string name="something_went_wrong">Something went wrong, please try again later.</string>
+    <string name="article">Articles</string>
+    <string name="title">title</string>
+    <string name="section">section</string>
+    <string name="publish_date">Date</string>
 </resources>

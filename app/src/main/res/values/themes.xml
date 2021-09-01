@@ -13,4 +13,10 @@
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
     </style>
+
+
+    <!-- Shimmer layout style -->
+    <style name="shimmerLayoutStyle">
+        <item name="android:background">@color/ShimmerViewColor</item>
+    </style>
 </resources>

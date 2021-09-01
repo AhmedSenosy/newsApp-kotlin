@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder
 import com.senosy.newsapp.BuildConfig
 import com.senosy.newsapp.data.remote.ApiClient
 import com.senosy.newsapp.data.remote.EndPoints.APIKEY
+import com.senosy.newsapp.data.repository.ArticleRepository
+import com.senosy.newsapp.data.repository.ArticleRepositoryImpl
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -40,7 +42,7 @@ object NetworkModule {
         builder.addInterceptor { chain ->
             val originalHttpUrl: HttpUrl = chain.request().url
             val url: HttpUrl = originalHttpUrl.newBuilder()
-                .addQueryParameter("api-key", APIKEY).build();
+                .addQueryParameter("apiKey", APIKEY).build();
             val requestBuilder: Request.Builder = chain.request().newBuilder()
                 .url(url)
             val newRequest = requestBuilder
@@ -102,6 +104,9 @@ object NetworkModule {
             }
         )
     }
+
+    fun provideRemoteRepository(apiClient: ApiClient) =
+        ArticleRepositoryImpl(apiClient) as ArticleRepository
 
 
 

@@ -1,13 +1,117 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ui.home.HomeFragment">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <TextView
+    <data>
+
+        <import type="android.view.View" />
+
+        <variable
+            name="viewModel"
+            type="com.senosy.newsapp.ui.home.HomeViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="Hello" />
+        tools:context=".ui.home.HomeFragment">
 
-</FrameLayout>
+        <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+            android:id="@+id/swipeRefreshHomeFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/gray2"
+            app:onRefreshListener="@{() -> viewModel.getArticles()}"
+            app:refreshing="@{viewModel.isShowRefresh}">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:visibility="@{viewModel.loading?View.VISIBLE : View.GONE}">
+
+                    <com.facebook.shimmer.ShimmerFrameLayout
+                        android:id="@+id/shimmerFrameLayout"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center"
+                        android:orientation="vertical">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="vertical">
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+
+                            <include layout="@layout/shimmer_base_fragment_layout" />
+                        </LinearLayout>
+                    </com.facebook.shimmer.ShimmerFrameLayout>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <TextView
+                    android:id="@+id/error_message_id"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="@{viewModel.errorMessage}"
+                    android:textAlignment="viewStart"
+                    android:textColor="@color/wenge"
+                    android:textSize="@dimen/font_size_14"
+                    android:visibility="@{viewModel.failure?View.VISIBLE : View.GONE}"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:background="@color/white"
+                    android:layoutAnimation="@anim/layout_animation"
+                    android:orientation="vertical"
+                    android:paddingBottom="@dimen/padding_14"
+                    android:visibility="@{!viewModel.failure &amp;&amp; !viewModel.loading ?View.VISIBLE : View.GONE}"
+                    app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:spanCount="1" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

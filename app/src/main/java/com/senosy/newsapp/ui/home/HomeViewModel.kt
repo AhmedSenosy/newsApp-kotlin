@@ -3,6 +3,7 @@ package com.senosy.newsapp.ui.home
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.senosy.newsapp.data.models.ArticleModel
 import com.senosy.newsapp.data.repository.ArticleRepository
 import com.senosy.newsapp.data.error.ErrorHandling
@@ -38,19 +39,30 @@ class HomeViewModel(
         getArticles()
     }
 
-    private fun getArticles() {
+    fun getArticles() {
         isShowRefresh.value = false
         coroutineScope.launch {
             _loading.postValue(true)
             try {
-                val response = repo.getArticles("")
-                if (response.status == "success") {
+                val response = repo.getArticles("apple")
+                if (response.status == "ok") {
                     withContext(Dispatchers.Main)
                     {
-                        _popularArticles.value = response.articles
+                        _popularArticles.postValue(response.articles)
                         _loading.postValue(false)
                         failure.postValue(false)
                     }
+                }
+                else{
+                    errorMessage.postValue(
+                        ErrorHandling(
+                            Throwable(),
+                            resourceProvider
+                        ).errorMsg
+
+                    )
+                    _loading.postValue(false)
+                    failure.postValue(true)
                 }
             }catch (e:Exception){
                 errorMessage.postValue(
@@ -100,5 +112,17 @@ class HomeViewModel(
     override fun onCleared() {
         super.onCleared()
         viewModelJob.cancel()
+    }
+}
+class HomeViewModelProvider (private val resourceProvider: ResourceProvider,
+                              private val repo: ArticleRepository) :ViewModelProvider.Factory{
+
+    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+
+        if (modelClass.isAssignableFrom(HomeViewModel::class.java)){
+            return HomeViewModel(resourceProvider,repo) as T
+        }
+
+        throw IllegalArgumentException("Unknown ViewModel class")
     }
 }
