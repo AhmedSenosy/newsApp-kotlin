@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">NewsApp</string>
+    <string name="check_connection">Please Check Internet Connection and try again</string>
+    <string name="something_went_wrong">Something went wrong, please try again later.</string>
 </resources>
