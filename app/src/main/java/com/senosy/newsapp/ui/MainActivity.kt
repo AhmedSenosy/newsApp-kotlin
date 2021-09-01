@@ -1,7 +1,8 @@
-package com.senosy.newsapp
+package com.senosy.newsapp.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.senosy.newsapp.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
