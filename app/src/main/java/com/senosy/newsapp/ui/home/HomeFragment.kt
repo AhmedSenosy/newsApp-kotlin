@@ -15,7 +15,9 @@ import com.senosy.newsapp.data.repository.ArticleRepositoryImpl
 import com.senosy.newsapp.databinding.HomeFragmentBinding
 import com.senosy.newsapp.ui.adapter.ArticleAdapter
 import com.senosy.newsapp.ui.interfaces.OnRecyclerItemClickListener
+import com.senosy.newsapp.utils.FAVOURITE_COUNTRY
 import com.senosy.newsapp.utils.NetworkModule
+import com.senosy.newsapp.utils.PreferenceHelper
 import com.senosy.newsapp.utils.Utilities
 import com.senosy.newsapp.utils.providers.ResourceProvider
 
@@ -48,6 +50,8 @@ class HomeFragment : Fragment() ,OnRecyclerItemClickListener{
 
     private fun initializeView() {
         binding.viewModel?.oncreate()
+        binding.country = PreferenceHelper.getPrefs(requireContext()).getString(FAVOURITE_COUNTRY,"EG")
+        binding.viewModel?.getArticles(binding.country ?: "")
         Utilities.setSwipeRefreshLayoutColor(
             requireActivity(),
             binding.swipeRefreshHomeFragment

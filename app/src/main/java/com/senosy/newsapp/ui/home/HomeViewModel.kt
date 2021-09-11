@@ -7,12 +7,14 @@ import androidx.lifecycle.ViewModelProvider
 import com.senosy.newsapp.data.models.ArticleModel
 import com.senosy.newsapp.data.repository.ArticleRepository
 import com.senosy.newsapp.data.error.ErrorHandling
+import com.senosy.newsapp.utils.FAVOURITE_COUNTRY
+import com.senosy.newsapp.utils.PreferenceHelper
 import com.senosy.newsapp.utils.providers.ResourceProvider
 import kotlinx.coroutines.*
 
 class HomeViewModel(
     private val resourceProvider: ResourceProvider,
-    private val repo: ArticleRepository
+    private val repo: ArticleRepository,
 ) : ViewModel() {
     private var viewModelJob = Job()
     private val coroutineScope = CoroutineScope(viewModelJob + Dispatchers.IO)
@@ -29,15 +31,14 @@ class HomeViewModel(
         _loading.value = false
         failure.value = false
         isShowRefresh.value = false
-        getArticles()
     }
 
-    fun getArticles() {
+    fun getArticles(country:String) {
         isShowRefresh.value = false
         coroutineScope.launch {
             _loading.postValue(true)
             try {
-                val response = repo.getArticles("apple")
+                val response = repo.getArticles(country)
                 if (response.status == "ok") {
                     withContext(Dispatchers.Main)
                     {

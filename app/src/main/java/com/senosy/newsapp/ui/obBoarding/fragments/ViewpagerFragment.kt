@@ -13,8 +13,8 @@ import com.senosy.newsapp.ui.obBoarding.fragments.ChooseTagFragment
 
 
 class ViewpagerFragment : Fragment() {
-    lateinit var binding: FragmentViewpagerBinding
-    val fragments = arrayListOf<Fragment>(
+    private lateinit var binding: FragmentViewpagerBinding
+    private val fragments = arrayListOf(
         ChooseCountryFragment(),
         ChooseTagFragment()
     )

@@ -7,5 +7,6 @@ import retrofit2.http.Query
 interface ApiClient {
 
     @GET(EndPoints.HEADLINE)
-    suspend fun getArticlesData(@Query("q") period: String?): ArticleBaseResponse
+    suspend fun getArticlesData(@Query("country") country: String?,
+                                @Query("category") category: String?): ArticleBaseResponse
 }
