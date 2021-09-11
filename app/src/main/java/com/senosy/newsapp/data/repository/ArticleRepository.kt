@@ -3,5 +3,5 @@ package com.senosy.newsapp.data.repository
 import com.senosy.newsapp.data.models.ArticleBaseResponse
 
 interface ArticleRepository {
-    suspend fun getArticles(tags:String?): ArticleBaseResponse
+    suspend fun getArticles(tags:String?,category:String?): ArticleBaseResponse
 }

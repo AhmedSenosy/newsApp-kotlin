@@ -1,25 +1,25 @@
 package com.senosy.newsapp.ui.home
 
-import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
+import android.widget.AdapterView.OnItemSelectedListener
+import android.widget.ArrayAdapter
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import com.senosy.newsapp.R
 import com.senosy.newsapp.data.models.ArticleModel
-import com.senosy.newsapp.data.remote.ApiClient
-import com.senosy.newsapp.data.repository.ArticleRepositoryImpl
 import com.senosy.newsapp.databinding.HomeFragmentBinding
 import com.senosy.newsapp.ui.adapter.ArticleAdapter
 import com.senosy.newsapp.ui.interfaces.OnRecyclerItemClickListener
-import com.senosy.newsapp.utils.FAVOURITE_COUNTRY
-import com.senosy.newsapp.utils.NetworkModule
-import com.senosy.newsapp.utils.PreferenceHelper
-import com.senosy.newsapp.utils.Utilities
+import com.senosy.newsapp.utils.*
 import com.senosy.newsapp.utils.providers.ResourceProvider
+import java.lang.reflect.Type
+
 
 class HomeFragment : Fragment() ,OnRecyclerItemClickListener{
 
@@ -35,7 +35,9 @@ class HomeFragment : Fragment() ,OnRecyclerItemClickListener{
         val repo = NetworkModule.provideRemoteRepository(apiClient)
         HomeViewModelProvider(ResourceProvider(requireContext()),repo)
     }
+    private var categories = mutableListOf<String>()
     private lateinit var adapter: ArticleAdapter
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -43,15 +45,25 @@ class HomeFragment : Fragment() ,OnRecyclerItemClickListener{
         binding = HomeFragmentBinding.inflate(inflater, container, false)
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
+        getDataFromPrefs()
         initializeView()
         setListener()
         return binding.root
     }
 
+    private fun getDataFromPrefs(){
+        val catString = PreferenceHelper.getPrefs(requireActivity().applicationContext).getString(
+            FAVOURITE_TAGS,"")
+        val listType: Type = object : TypeToken<List<String?>?>() {}.type
+
+        categories = Gson().fromJson(catString,listType)
+    }
+
     private fun initializeView() {
         binding.viewModel?.oncreate()
         binding.country = PreferenceHelper.getPrefs(requireContext()).getString(FAVOURITE_COUNTRY,"EG")
-        binding.viewModel?.getArticles(binding.country ?: "")
+        binding.spinCategories.adapter = ArrayAdapter(requireContext(),android.R.layout.simple_dropdown_item_1line,categories)
+        binding.viewModel?.getArticles(binding.country ?: "",categories[0])
         Utilities.setSwipeRefreshLayoutColor(
             requireActivity(),
             binding.swipeRefreshHomeFragment
@@ -72,6 +84,16 @@ class HomeFragment : Fragment() ,OnRecyclerItemClickListener{
             adapter.addData(it);
         })
 
+        binding.spinCategories.onItemSelectedListener = object: OnItemSelectedListener{
+            override fun onItemSelected(p0: AdapterView<*>?, p1: View?, p2: Int, p3: Long) {
+                binding.viewModel?.getArticles(binding.country ?: "",categories[p2])
+            }
+
+            override fun onNothingSelected(p0: AdapterView<*>?) {
+                binding.viewModel?.getArticles(binding.country ?: "",categories[0])
+            }
+
+        }
     }
 
     private fun openArticleDetails(articleData: ArticleModel) {

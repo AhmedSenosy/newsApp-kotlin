@@ -71,7 +71,7 @@ class ChooseTagFragment : Fragment() {
     private fun saveTags(){
         val tags = Gson().toJson(savedTags)
         PreferenceHelper.getPrefs(requireContext())[FAVOURITE_TAGS] = tags
-        PreferenceHelper.getPrefs(requireContext())[PREF_FIRST_TIME] = true
+        PreferenceHelper.getPrefs(requireContext())[PREF_FIRST_TIME] = false
         requireActivity().finish()
         startActivity(Intent(requireActivity(),MainActivity::class.java))
     }

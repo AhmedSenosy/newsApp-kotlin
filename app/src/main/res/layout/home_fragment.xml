@@ -13,6 +13,9 @@
         <variable
             name="country"
             type="String" />
+        <variable
+            name="category"
+            type="String" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -20,13 +23,24 @@
         android:layout_height="match_parent"
         tools:context=".ui.home.HomeFragment">
 
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/spin_categories"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:padding="@dimen/padding_14"/>
+
         <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
             android:id="@+id/swipeRefreshHomeFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="0dp"
             android:background="@color/gray2"
-            app:onRefreshListener="@{() -> viewModel.getArticles(country)}"
-            app:refreshing="@{viewModel.isShowRefresh}">
+            app:onRefreshListener="@{() -> viewModel.getArticles(country,category)}"
+            app:refreshing="@{viewModel.isShowRefresh}"
+            app:layout_constraintTop_toBottomOf="@id/spin_categories"
+            app:layout_constraintBottom_toBottomOf="parent">
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"

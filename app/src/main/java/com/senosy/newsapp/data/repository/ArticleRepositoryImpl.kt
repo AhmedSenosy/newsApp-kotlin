@@ -6,8 +6,9 @@ import com.senosy.newsapp.data.remote.ApiClient
 class ArticleRepositoryImpl (
     private val apiClient: ApiClient
 ) : ArticleRepository {
-    override suspend fun getArticles(tags: String?): ArticleBaseResponse {
-       return apiClient.getArticlesData(tags);
+    override suspend fun getArticles(tags: String?, category: String?): ArticleBaseResponse {
+        return apiClient.getArticlesData(tags,category);
+
     }
 
 

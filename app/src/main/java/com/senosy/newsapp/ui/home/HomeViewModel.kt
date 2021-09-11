@@ -33,12 +33,12 @@ class HomeViewModel(
         isShowRefresh.value = false
     }
 
-    fun getArticles(country:String) {
+    fun getArticles(country:String,category:String) {
         isShowRefresh.value = false
         coroutineScope.launch {
             _loading.postValue(true)
             try {
-                val response = repo.getArticles(country)
+                val response = repo.getArticles(country,category)
                 if (response.status == "ok") {
                     withContext(Dispatchers.Main)
                     {
